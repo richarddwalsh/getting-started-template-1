@@ -15,5 +15,30 @@ $(document).ready(function() {
   };
 
   var map = new google.maps.Map($("#map").get(0), mapOptions);
+  var address = "2500 University Dr NW, Calgary, AB T2N 1N4";
+  geocoder.geocode({ address: address}, function(results, status) {
+    // Check If Status is OK
+    if (status == google.maps.GeocoderStatus.OK) {
+      // Add marker
+      marker = new google.maps.Marker({
+        position: results[0].geometry.location,
+        map: map
+      });
 
+      // Reset Center and Zoom to the Geocoded Location
+      map.setCenter(results[0].geometry.location);
+      map.setZoom(12);
+
+      // Add Info Window
+      var infoWindow = new google.maps.InfoWindow({
+        content: "<b>" + address + "</b>"
+      });
+
+      // Show Info Window
+      infoWindow.open(map, marker);
+    } else {
+      alert(status);
+    }
+
+  });
 });
